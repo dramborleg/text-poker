@@ -16,13 +16,15 @@ class Parser():
     def __init__(self):
         self.games = {}
         self.parser = argparse.ArgumentParser()
-        self.parser.add_argument('-c', '--create', type=self.create_game)
+        self.parser.add_argument('-c', '--create', nargs='?', const='GAME_',
+                                 type=self.create_game)
 
     def create_game(self, name):
-        if name is None:
-            return 'Game name argument is required'
+        if name is 'GAME_':
+            name += str(len(self.games))
         if name in self.games:
-            return 'Game %s already exists' % name
+            return ('Game name "%s" collides with another game. '
+                    'Please provide a different game name.' % name)
         self.games[name] = game.Game(name)
         return 'Created game %s' % name
 

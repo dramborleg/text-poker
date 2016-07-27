@@ -1,7 +1,7 @@
 import parser
 
 p = parser.Parser()
-input = ['-c mango', '--create mango', 'c mango',
+input = ['-c mango', '--create mango', 'c mango', '-c Uguisu',
          '--create kiwi c guava lemon', '--create']
 
 for i in input:
