@@ -23,6 +23,13 @@ class Parser():
         self.parser.add_argument('-c', '--create', nargs='?', const='GAME_')
         self.parser.add_argument('-j', '--join')
         self.parser.add_argument('-t', '--tag')
+        self.parser.add_argument('-s', '--shuffle', action='store_true')
+        self.parser.add_argument('-d', '--deal', type=int)
+        self.parser.add_argument('-f', '--flop', action='store_true')
+        self.parser.add_argument('-o', '--overturn', nargs='?', const=1,
+                                 type=int)
+        self.parser.add_argument('-q', '--query', action='store_true')
+        self.parser.add_argument('-p', '--players', action='store_true')
 
     def create_game(self, name='GAME_'):
         if name is 'GAME_':
@@ -32,6 +39,12 @@ class Parser():
                     'Please provide a different game name. ' % name)
         self.games[name] = game.Game(name)
         return 'Created game %s ' % name
+
+    def get_cur_game(self):
+        if self.current_id in self.players:
+            return self.players[self.current_id].game
+        else:
+            return None
 
     def join_game(self, game_id):
         if (self.current_id in self.players and
@@ -54,12 +67,49 @@ class Parser():
             self.players[self.current_id] = player.Player(player_tag)
         return 'Successfully set tag to %s ' % player_tag
 
+    def shuffle(self):
+        game = self.get_cur_game()
+        if game is not None:
+            game.shuffle()
+        return ''
+
+    def deal(self, ncards):
+        game = self.get_cur_game()
+        if game is not None:
+            game.deal(ncards)
+        return ''
+
+    def flip_flop(self):
+        game = self.get_cur_game()
+        if game is not None:
+            game.flip_flop()
+        return ''
+
+    def overturn(self, ncards):
+        game = self.get_cur_game()
+        if game is not None:
+            game.flip_cards(ncards)
+        return ''
+
+    def query_state(self):
+        if self.current_id in self.players:
+            return self.players[self.current_id].query_state()
+        else:
+            return 'Not a player, no info to query '
+
+    def query_players(self):
+        game = self.get_cur_game()
+        if game is not None:
+            return game.query_players()
+        else:
+            return 'Not participating in a valid game '
+
     def parse(self, command, player_id):
         self.current_id = player_id
         try:
             known, unknown = self.parser.parse_known_args(command.split())
         except:
-            return 'Internal error. Incorrect arguments?'
+            return 'Internal error. Incorrect arguments? '
         ret = ''
         if known.create:
             ret += self.create_game(known.create)
@@ -67,6 +117,18 @@ class Parser():
             ret += self.join_game(known.join)
         if known.tag:
             ret += self.set_tag(known.tag)
+        if known.shuffle:
+            ret += self.shuffle()
+        if known.deal is not None and known.deal > 0:
+            ret += self.deal(known.deal)
+        if known.flop:
+            ret += self.flip_flop()
+        if known.overturn is not None and known.overturn > 0:
+            ret += self.overturn(known.overturn)
+        if known.query:
+            ret += self.query_state()
+        if known.players:
+            ret += self.query_players()
         prefix = ''
         if len(unknown) > 0:
             if len(ret) > 0:

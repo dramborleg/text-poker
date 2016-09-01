@@ -1,3 +1,6 @@
+from deuces import Card
+
+
 class Player():
     """
     Contains information about players, such as their current in-game status as
@@ -10,3 +13,14 @@ class Player():
         self.tag = tag
         self.pies = pies
         self.game = None
+        self.cards = []
+
+    def query_state(self):
+        ret = 'pies = %d, cards = ' % self.pies
+        for c in self.cards:
+            ret += Card.int_to_pretty_str(c)
+        if self.game is None:
+            ret += ', currently not in-game'
+        else:
+            ret += ', ' + self.game.query_state()
+        return ret
