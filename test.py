@@ -5,7 +5,7 @@ game_creation = [('-c mango', 0), ('--create mango', 0), ('c mango', 0),
                  ('--create GAME_4', 0), ('-c', 0)]
 add_players = [('-c mango', 0), ('-j', 0), ('--join mango', 0), ('j mango', 0),
                ('-j mango', 'dramborleg'), ('-j mang0', 1), ('-j mango', 0),
-               ('-t ringil', 'dramborleg'), ('-t kiwi', 1), ('-j mango', 1)]
+               ('-t ringil', 'dramborleg'), ('-t kiwi -j mango', 1)]
 
 tests = [('GAME CREATION', game_creation), ('ADDING PLAYERS', add_players)]
 
