@@ -31,13 +31,13 @@ class Parser():
         self.parser.add_argument('-q', '--query', action='store_true')
         self.parser.add_argument('-p', '--players', action='store_true')
 
-    def create_game(self, name='GAME_'):
+    def create_game(self, bot, name='GAME_'):
         if name is 'GAME_':
             name += str(len(self.games))
         if name in self.games:
             return ('Game name "%s" collides with another game. '
                     'Please provide a different game name. ' % name)
-        self.games[name] = game.Game(name)
+        self.games[name] = game.Game(bot, name)
         return 'Created game %s ' % name
 
     def get_cur_game(self):
@@ -52,7 +52,8 @@ class Parser():
             return ('You already appear to be in-game. Please quit game '
                     'before joining a new game. ')
         elif self.current_id not in self.players:
-            self.players[self.current_id] = player.Player(self.current_id)
+            self.players[self.current_id] = player.Player(self.current_id,
+                                                          self.current_id)
         if game_id not in self.games:
             return ('Game %s does not exist, please create new game or join '
                     'an existing game ' % game_id)
@@ -64,7 +65,8 @@ class Parser():
         if self.current_id in self.players:
             self.players[self.current_id].tag = player_tag
         else:
-            self.players[self.current_id] = player.Player(player_tag)
+            self.players[self.current_id] = player.Player(player_tag,
+                                                          self.current_id)
         return 'Successfully set tag to %s ' % player_tag
 
     def shuffle(self):
@@ -104,7 +106,7 @@ class Parser():
         else:
             return 'Not participating in a valid game '
 
-    def parse(self, command, player_id):
+    def parse(self, command, player_id, bot):
         self.current_id = player_id
         try:
             known, unknown = self.parser.parse_known_args(command.split())
@@ -112,7 +114,7 @@ class Parser():
             return 'Internal error. Incorrect arguments? '
         ret = ''
         if known.create:
-            ret += self.create_game(known.create)
+            ret += self.create_game(bot, known.create)
         if known.join:
             ret += self.join_game(known.join)
         if known.tag:

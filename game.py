@@ -1,4 +1,6 @@
 from deuces import Card, Deck
+import smsbot
+import testbot
 
 
 class Game():
@@ -7,11 +9,12 @@ class Game():
     various card games.
     """
 
-    def __init__(self, name='kiwi'):
+    def __init__(self, bot, name='kiwi'):
         self.players = []
         self.name = name
         self.deck = Deck()
         self.visible_cards = []
+        self.bot = bot
 
     def add_player(self, player):
         self.players.append(player)
@@ -50,3 +53,9 @@ class Game():
         for c in self.visible_cards:
             info += Card.int_to_pretty_str(c)
         return info
+
+    def message_players(self, message):
+        uids = []
+        for p in self.players:
+            uids.append(p.uid)
+        self.bot.message_players(uids, message)

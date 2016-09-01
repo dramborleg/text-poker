@@ -9,8 +9,9 @@ class Player():
     Currency is defined in terms of pi(e)s.
     """
 
-    def __init__(self, tag, pies=0):
+    def __init__(self, tag, uid, pies=0):
         self.tag = tag
+        self.uid = uid
         self.pies = pies
         self.game = None
         self.cards = []

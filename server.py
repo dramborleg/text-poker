@@ -1,9 +1,13 @@
 import cherrypy
 import twilio.twiml
 import configparser
+import smsbot
 
 
-class Processor(object):
+class Processor():
+    def __init__(self):
+        self.bot = smsbot.SMSBot('twilio.conf')
+
     @cherrypy.expose
     def index(self, **kwargs):
         resp = twilio.twiml.Response()
