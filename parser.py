@@ -30,6 +30,8 @@ class Parser():
                                  type=int)
         self.parser.add_argument('-q', '--query', action='store_true')
         self.parser.add_argument('-p', '--players', action='store_true')
+        self.parser.add_argument('-r', '--reveal', action='store_true')
+        self.parser.add_argument('-m', '--msg', type=str, nargs='+')
 
     def create_game(self, bot, name='GAME_'):
         if name is 'GAME_':
@@ -93,6 +95,12 @@ class Parser():
             game.flip_cards(ncards)
         return ''
 
+    def reveal(self):
+        if self.current_id in self.players:
+            return self.players[self.current_id].reveal()
+        else:
+            return 'Not a player'
+
     def query_state(self):
         if self.current_id in self.players:
             return self.players[self.current_id].query_state()
@@ -105,6 +113,12 @@ class Parser():
             return game.query_players()
         else:
             return 'Not participating in a valid game '
+
+    def msg(self, msg):
+        if self.current_id in self.players:
+            return self.players[self.current_id].message_game(msg)
+        else:
+            return 'Not a player'
 
     def parse(self, command, player_id, bot):
         self.current_id = player_id
@@ -127,10 +141,14 @@ class Parser():
             ret += self.flip_flop()
         if known.overturn is not None and known.overturn > 0:
             ret += self.overturn(known.overturn)
+        if known.reveal:
+            ret += self.reveal()
         if known.query:
             ret += self.query_state()
         if known.players:
             ret += self.query_players()
+        if known.msg:
+            ret += self.msg(' '.join(known.msg))
         prefix = ''
         if len(unknown) > 0:
             if len(ret) > 0:
