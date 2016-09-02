@@ -18,6 +18,7 @@ class Game():
 
     def shuffle(self):
         self.deck.shuffle()
+        self.visible_cards = []
 
     def deal(self, ncards):
         for i in range(ncards):
