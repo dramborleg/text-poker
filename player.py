@@ -9,8 +9,9 @@ class Player():
     Currency is defined in terms of pi(e)s.
     """
 
-    def __init__(self, tag, pies=0):
+    def __init__(self, tag, uid, pies=0):
         self.tag = tag
+        self.uid = uid
         self.pies = pies
         self.game = None
         self.cards = []
@@ -24,3 +25,22 @@ class Player():
         else:
             ret += ', ' + self.game.query_state()
         return ret
+
+    def reveal(self):
+        msg = "%s's cards are" % self.tag
+        for c in self.cards:
+            msg += ' ' + Card.int_to_pretty_str(c)
+        self.cards = []
+        if self.game is not None:
+            self.game.message_players(msg)
+        else:
+            return 'Not in game'
+        return 'Revealed and discarded hand'
+
+    def message_game(self, msg):
+        if self.game is not None:
+            msg = self.tag + ': ' + msg
+            self.game.message_players(msg)
+        else:
+            return 'Not in game'
+        return 'Messaged players'
