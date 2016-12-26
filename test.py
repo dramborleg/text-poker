@@ -14,7 +14,11 @@ full_game = [('-c mango -j mango -t せんぱい', 0), ('-j mango -t こうは�
              ('-s -d 2', 0), ('-m I\'ll be the dealer', 0), ('-f', 0),
              ('-o', 0), ('-o', 0), ('-q', 0), ('-q', 1), ('-r', 0), ('-r', 1),
              ('-s -d 2', 1), ('-m Now I\'m the dealer', 1), ('-f', 1),
-             ('-o', 1), ('-o', 1), ('-q', 0), ('-q', 1), ('-r', 0), ('-r', 1)]
+             ('-o', 1), ('-o', 1), ('-q', 0), ('-q', 1), ('-r', 0), ('-r', 1),
+             ('-a 16', 0), ('-q', 0), ('-s', 0), ('-o 3', 0), ('-b 2', 1),
+             ('-b 4', 0), ('-q', 0), ('-q', 1), ('-o 2', 0), ('-b 4', 0),
+             ('-w 8', 1), ('-m まぬけ！give me my pies back!', 0),
+             ('-q', 0), ('-q', 1)]
 
 tests = [('GAME CREATION', game_creation), ('ADDING PLAYERS', add_players),
          ('GAME OPERATIONS', game_ops), ('FULL GAME', full_game)]
