@@ -30,6 +30,9 @@ class Parser():
                                  type=int)
         self.parser.add_argument('-q', '--query', action='store_true')
         self.parser.add_argument('-p', '--players', action='store_true')
+        self.parser.add_argument('-a', '--acquire', type=int)
+        self.parser.add_argument('-b', '--bet', type=int)
+        self.parser.add_argument('-w', '--win', type=int)
         self.parser.add_argument('-r', '--reveal', action='store_true')
         self.parser.add_argument('-m', '--msg', type=str, nargs='+')
 
@@ -95,6 +98,24 @@ class Parser():
             game.flip_cards(ncards)
         return ''
 
+    def acquire(self, numpies):
+        if self.current_id in self.players:
+            return self.players[self.current_id].acquire(numpies)
+        else:
+            return 'Not a player'
+
+    def bet(self, numpies):
+        if self.current_id in self.players:
+            return self.players[self.current_id].bet(numpies)
+        else:
+            return 'Not a player'
+
+    def withdraw(self, numpies):
+        if self.current_id in self.players:
+            return self.players[self.current_id].withdraw(numpies)
+        else:
+            return 'Not a player'
+
     def reveal(self):
         if self.current_id in self.players:
             return self.players[self.current_id].reveal()
@@ -141,6 +162,12 @@ class Parser():
             ret += self.flip_flop()
         if known.overturn is not None and known.overturn > 0:
             ret += self.overturn(known.overturn)
+        if known.acquire is not None:
+            ret += self.acquire(known.acquire)
+        if known.bet is not None and known.bet > 0:
+            ret += self.bet(known.bet)
+        if known.win is not None and known.win > 0:
+            ret += self.withdraw(known.win)
         if known.reveal:
             ret += self.reveal()
         if known.query:
