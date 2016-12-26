@@ -37,6 +37,26 @@ class Player():
             return 'Not in game'
         return 'Revealed and discarded hand'
 
+    def acquire(self, numpies):
+        self.pies += numpies
+        return 'Added %d pies to wallet' % numpies
+
+    def bet(self, numpies):
+        if self.game is None:
+            return 'Not in game'
+        numpies = min(numpies, self.pies)
+        self.game.potpies += numpies
+        self.pies -= numpies
+        return 'Added %d pies to pot' % numpies
+
+    def withdraw(self, numpies):
+        if self.game is None:
+            return 'Not in game'
+        numpies = min(numpies, self.game.potpies)
+        self.game.potpies -= numpies
+        self.pies += numpies
+        return 'Withdrew %d pies from pot' % numpies
+
     def message_game(self, msg):
         if self.game is not None:
             msg = self.tag + ': ' + msg

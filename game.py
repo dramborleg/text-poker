@@ -15,6 +15,7 @@ class Game():
         self.deck = Deck()
         self.visible_cards = []
         self.bot = bot
+        self.potpies = 0
 
     def add_player(self, player):
         self.players.append(player)
@@ -52,6 +53,7 @@ class Game():
         info = '%s visible cards: ' % self.name
         for c in self.visible_cards:
             info += Card.int_to_pretty_str(c)
+        info += ', potpies: %d' % self.potpies
         return info
 
     def message_players(self, message):
