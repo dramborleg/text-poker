@@ -1,4 +1,4 @@
 # text-poker
-Text based poker engine
+Text based card games
 
-This will eventually be a text based poker game meant for playing poker among friends. This project will most likely start with implementing an sms interface, but it should be easily extendable to other text based interfaces too. As more features get added, more documentation will probably be added here as well.
+This is a simple python server using the Twilio api to allow card games to be played with other users via sms. It should be relatively easy to extend to enable games to be played across other channels too (eg irc), but the project stopped being useful to me before I got around to adding them.
